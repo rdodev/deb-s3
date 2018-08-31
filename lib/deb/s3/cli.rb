@@ -602,7 +602,7 @@ class Deb::S3::CLI < Thor
     Deb::S3::Utils.bucket      = options[:bucket]
     Deb::S3::Utils.signing_key = options[:sign]
     Deb::S3::Utils.gpg_options = options[:gpg_options]
-    Deb::S3::Utils.gpg_cmd = options[:gpg_cmd]
+    Deb::S3::Utils.gpg_cmd     = options[:gpg_cmd]
     Deb::S3::Utils.prefix      = options[:prefix]
     Deb::S3::Utils.encryption  = options[:encryption]
 
