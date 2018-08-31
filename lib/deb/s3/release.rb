@@ -105,7 +105,7 @@ class Deb::S3::Release
       local_file = release_tmp.path+".asc"
       key_param = Deb::S3::Utils.signing_key != "" ? "--default-key=#{Deb::S3::Utils.signing_key}" : ""
       tmp_gpg_cmd = Deb::S3::Utils.gpg_cmd != "" ? Deb::S3::Utils.gpg_cmd + " --in #{release_tmp.path} --out #{local_file}" : nil
-      gpg_cmd = Deb::S3::Utils.gpg_cmd || "gpg -a #{key_param} --digest-algo SHA256 #{Deb::S3::Utils.gpg_options} -s --clearsign #{release_tmp.path}"
+      gpg_cmd = tmp_gpg_cmd || "gpg -a #{key_param} --digest-algo SHA256 #{Deb::S3::Utils.gpg_options} -s --clearsign #{release_tmp.path}"
       
       if system("#{gpg_cmd}")
         remote_file = "dists/#{@codename}/InRelease"
@@ -118,7 +118,6 @@ class Deb::S3::Release
       end
       gpg_cmd = tmp_gpg_cmd || "#gpg -a #{key_param} --digest-algo SHA256 #{Deb::S3::Utils.gpg_options} -b #{release_tmp.path}"
       if system("#{gpg_cmd}")
-        local_file = release_tmp.path+".asc"
         remote_file = self.filename+".gpg"
         yield remote_file if block_given?
         raise "Unable to locate Release signature file" unless File.exists?(local_file)
